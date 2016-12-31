@@ -21,6 +21,9 @@ The main procedures are listed as follows:
 
 	Seeds we use in this experiment are extracted from articles' title by using a special pattern "NN using NN". The first NN is  problem entity, the second NN is solution entity. We use this pattern to match article titles to generate problem seeds and solution seeds. 
 
+	Input: acm articles' abstract. 
+	Output: problem entities, solution entities, patterns 
+
 2. Training data construction. 
 	We treat the problem entities and solution entities that appear in titles as main problem and solution of that article. We could get many training data through this way. But there are still many other article of which titles do not include problem and solution entities. Our main mission is to identify main problem and solution from extracted problem entities and solution entities for these articles.
 
