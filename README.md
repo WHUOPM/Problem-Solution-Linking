@@ -23,7 +23,7 @@ The main procedures are listed as follows:
 
 	Input: acm articles' abstract. <br>
 	Output: problem entities, solution entities, patterns <br>
-	Format: PaperID====Title====Abstract====Year====$problem_1;problem_2;...;problem_n$====$solution_1;solution_2;...;solution_m$ (in dict, json)
+	Format: PaperID====Title====Abstract====Year====\$problem_1;problem_2;...;problem_n\$====\$solution_1;solution_2;...;solution_m\$ (in dict, json)
 
 2. Training data construction. 
 	We treat the problem entities and solution entities that appear in titles as main problem and solution of that article. We could get many training data through this way. But there are still many other article of which titles do not include problem and solution entities. Our main mission is to identify main problem and solution from extracted problem entities and solution entities for these articles.
