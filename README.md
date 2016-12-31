@@ -15,10 +15,14 @@ Knowledge is the result of solving problems, papers are knowledge carrier record
 The main procedures are listed as follows:
 
 1. Identify problem entities and solution entities from abstract of research articles. 
-	In this step, we apply [Stanford entity learning method](http://nlp.stanford.edu/software/patternslearning.shtml) based on [SPIE](http://nlp.stanford.edu/pubs/gupta-manning-ijcnlp11.pdf) to extract two kinds of entities (Problem and Solution) from articles' abstract.
+	In this step, we apply [Stanford entity learning method](http://nlp.stanford.edu/software/patternslearning.shtml) based on [SPIED](http://nlp.stanford.edu/pubs/gupta-manning-ijcnlp11.pdf) to extract two kinds of entities (Problem and Solution) from articles' abstract.
+
+	This is a bootstrapping method iteratively learning more entities and patterns by using some seeds.
+
+	Seeds we use in this experiment are extracted from articles' title by using a special pattern "NN using NN". The first NN is  problem entity, the second NN is solution entity. We use this pattern to match article titles to generate problem seeds and solution seeds. 
 
 2. Training data construction. 
-	We treat the problem entities and solution entities that appear in titles as main problem and solution of that article. We could get many training data through this way. But there are also many other article of which titles do not include problem and solution entities. Our main mission is to identify main problem and solution from extracted problem entities and solution entities for these articles.
+	We treat the problem entities and solution entities that appear in titles as main problem and solution of that article. We could get many training data through this way. But there are still many other article of which titles do not include problem and solution entities. Our main mission is to identify main problem and solution from extracted problem entities and solution entities for these articles.
 
 3. Model training and evaluation
 	It could be treated as an binary classification problem. Features should be specified, and the method are from scikit-learn. We evaluate our method based on training set and  manually evaluate 200 files.
