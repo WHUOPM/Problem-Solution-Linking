@@ -28,18 +28,18 @@ The main procedures are listed as follows:
 ### Construction
 ---------------
 To construct a problem and solution bipartite graph, there still some problems to be solved:
-	* Synonyms, like "SVM" and "Support Vector Machine",  "Clustering", "Clustering Algorithm" 
-	* hypernyms, like "Text Categorization" and "Academic Text Categorization".
+* Synonyms, like "SVM" and "Support Vector Machine",  "Clustering", "Clustering Algorithm" 
+* hypernyms, like "Text Categorization" and "Academic Text Categorization".
 
 Methods to solve these problems.
 
 ### Prediction
 ---------------
 Given a problem, predicting new problem and solution pair will be applied in future is a link prediction problem. Methods in following:
-	* Similarity based: Common neighbors, Jaccard, Adar.
-	* Low Rank Approximation: SVD.
-	* Graph based: Rand Walk.
-	* Supervised: Binary classification of a link.
+* Similarity based: Common neighbors, Jaccard, Adar.
+* Low Rank Approximation: SVD.
+* Graph based: Rand Walk.
+* Supervised: Binary classification of a link.
 
 
 
