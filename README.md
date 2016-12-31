@@ -21,8 +21,9 @@ The main procedures are listed as follows:
 
 	Seeds we use in this experiment are extracted from articles' title by using a special pattern "NN using NN". The first NN is  problem entity, the second NN is solution entity. We use this pattern to match article titles to generate problem seeds and solution seeds. 
 
-	Input: acm articles' abstract. 
-	Output: problem entities, solution entities, patterns 
+	Input: acm articles' abstract. <br>
+	Output: problem entities, solution entities, patterns <br>
+	Format: PaperID====Title====Abstract====Year====$problem_1;problem_2;...;problem_n$====$solution_1;solution_2;...;solution_m$ (in dict, json)
 
 2. Training data construction. 
 	We treat the problem entities and solution entities that appear in titles as main problem and solution of that article. We could get many training data through this way. But there are still many other article of which titles do not include problem and solution entities. Our main mission is to identify main problem and solution from extracted problem entities and solution entities for these articles.
@@ -30,13 +31,13 @@ The main procedures are listed as follows:
 3. Model training and evaluation
 	It could be treated as an binary classification problem. Features should be specified, and the method are from scikit-learn. We evaluate our method based on training set and  manually evaluate 200 files.
 
-4. Extract problem and solution pairs of articles from acm dl.
+4. Extract problem and solution pairs of acm articles.
 
 ### Construction
 ---------------
 To construct a problem and solution bipartite graph, there still some problems to be solved:
 * Synonyms, like "SVM" and "Support Vector Machine",  "Clustering", "Clustering Algorithm" 
-* hypernyms, like "Text Categorization" and "Academic Text Categorization".
+* Hypernyms, like "Text Categorization" and "Academic Text Categorization".
 
 Methods to solve these problems.
 
