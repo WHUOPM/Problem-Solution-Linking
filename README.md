@@ -41,6 +41,9 @@ Given a problem, predicting new problem and solution pair will be applied in fut
 * Graph based: Rand Walk.
 * Supervised: Binary classification of a link.
 
+Thanks to work of [clarkkev](https://github.com/clarkkev/bipartite-link-prediction/blob/master/similarity.py), we mainly used these four kinds of commonly used link prediction methods.
+
+
 
 
 
