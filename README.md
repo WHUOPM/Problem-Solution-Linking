@@ -2,7 +2,7 @@
 ==============================
 Identify problems and solutions of research articles and predict new solutions given a problem based on known knowledge.
 
-## Framework of experiments
+## Components of experiments
 --------------
 * Representation: extract main problem and main solution from an article.
 * Construction: construct a bipartite graph based on problem and solution pairs.
