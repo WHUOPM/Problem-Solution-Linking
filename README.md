@@ -15,7 +15,7 @@ Knowledge is the result of solving problems, papers are knowledge carrier record
 The main procedures are listed as follows:
 
 1. Identify problem entities and solution entities from abstract of research articles. 
-	In this step, we apply [Stanford entity learning method](http://nlp.stanford.edu/software/patternslearning.shtml) based on [SPIED](http://nlp.stanford.edu/pubs/gupta-manning-ijcnlp11.pdf) to extract two kinds of entities (Problem and Solution) from articles' abstract.
+	
 
 	This is a bootstrapping method iteratively learning more entities and patterns by using some seeds.
 
