@@ -54,16 +54,17 @@ def chunk_file(path):
 	# print result
 	return result
 
-def chunk_folder(folder_path, worker=4):
+def chunk_folder(folder_path, index_path, start=0, end=-1, worker=4):
 	
+	logger.info("index path:{:}, start from {:} to end {:} with {:} workers".format(index_path,start,end,worker))
 	chunk_results = defaultdict(dict)
 	filelist = []
-	for filepath in os.listdir(folder_path+"/el_files"):
-		filepath=folder_path+"/el_files/"+filepath
+	for filepath in open(index_path):
+		filepath=folder_path+"/el_files/"+filepath.strip()
 		filelist.append(filepath)
 
 	pool = ThreadPool(worker)
-	results = pool.map(chunk_file, filelist[:10])
+	results = pool.map(chunk_file, filelist[start:end])
 	for result in results:
 		for ids,i,chunks in result:
 			chunk_results[ids][i]=chunks
@@ -83,7 +84,7 @@ elif op=="chunk_file":
 	for s in chunk_file(sys.argv[2]):
 		print s
 elif op == "chunk_folder":
-	chunk_folder(sys.argv[2])
+	chunk_folder(sys.argv[2],sys.argv[3],start=int(sys.argv[4]),end=int(sys.argv[5]),worker=int(sys.argv[6]))
 else:
 	sys.stderr.write("No such operation: {:}\n".format(op))
 
