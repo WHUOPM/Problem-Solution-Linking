@@ -32,15 +32,34 @@ def generate_seeds(acm_conf_json):
 
 	logger = iters_logger(1000,"generating seeds")
 	seeddict = defaultdict(list)
+
+	problem_dic = {}
+	solution_dic = {}
 	for ids in acm_conf_articles.keys():
 		dic = acm_conf_articles[ids]
 		problem,solution = match_patterns(dic)
+		
 		if problem and solution:
+			problem = problem.lower()
+			solution = solution.lower()
 			# a entity could be problem in a paper, but be solution in others
 			# so, seed entities should match the files 
-			seeddict['problem'].append(problem.lower())
-			seeddict['solution'].append(solution.lower())
-			logger.step()
+			problem_dic[problem] = problem_dic.get(problem,0)+1
+			solution_dic[solution] = solution_dic.get(solution,0)+1
+
+			# seeddict['problem'].append(problem.lower())
+			# seeddict['solution'].append(solution.lower())
+			# logger.step()
+
+	for k,v in sorted(problem_dic.items(), key= lambda x:x[1], reverse= True)[:100]:
+		if v > 1:
+			seeddict['problem'].append(k)
+
+	for k,v in sorted(solution_dic.items(), key= lambda x:x[1], reverse= True)[:100]:
+		if v > 1:
+			seeddict['solution'].append(k)
+
+	logger.info("{:} problem seeds and {:} solution seeds are extracted.".format(len(seeddict['problem']),len(seeddict['solution'])))
 
 	open("data/seeds.json","w").write(json.dumps(seeddict))
 	logger.info("saved to data/seeds.json")
@@ -79,6 +98,36 @@ def reverb_pattern_extraction():
 
 	open("data/reverb_patterns.json","w").write(json.dumps(pattern_dic))
 
+def pattern_dict():
+	pattern_dic = defaultdict(dict)
+	logger = iters_logger(10000,"extract patterns")
+	pattern_set = set()
+	for line in open("data/bak/reverb_result.txt"):
+		splits= line.strip().split("\t")
+		if len(splits)!=18:
+			continue
+		ids = splits[0].split("_")[-3]
+		#trips 
+		arg1,relation,arg2 = splits[15].decode("ISO-8859-1").encode('utf-8'),splits[16].decode("ISO-8859-1").encode('utf-8'),splits[17].decode("ISO-8859-1").encode('utf-8')
+
+		arg1list = pattern_dic["NN=="+relation].get(arg1,[])
+		arg1list.append(ids)
+		pattern_dic["NN=="+relation][arg1] = arg1list
+		arg2list = pattern_dic[relation+ "==NN"].get(arg2,[])
+		arg2list.append(ids)
+		pattern_dic[relation+ "==NN"][arg2] = arg2list
+		pattern_set.add("NN=="+relation)
+		pattern_set.add(relation+ "==NN")
+
+		logger.step()
+
+	logger.info("{:} patterns are extracted".format(len(pattern_set)))	
+	logger.end()
+
+
+	open("data/pattern_dict.json","w").write(json.dumps(pattern_dic))
+
+
 
 def score_patterns(patternlist,reverb_patterns,entities):
 	#using RLOGF = (F/N)*log(F)
@@ -102,7 +151,7 @@ def score_patterns(patternlist,reverb_patterns,entities):
 #entities -> patterns
 def entities_to_patterns(logger,entities,patterns,reverb_patterns, \
 	max_patterns_learned_per_iter=100, \
-	min_score_of_patterns=0.1,min_number_of_patterns=1):
+	min_score_of_patterns=0.01,min_number_of_patterns=0):
 
 	logger.info("number of entities begin: {:}".format(len(entities)))
 	patternlist = []
@@ -193,8 +242,8 @@ def one_step(ps_entities,ps_patterns,reverb_patterns,logger, \
 
 
 def bootstraped_learning(seeds_json,reverb_patterns_json, \
-	n_iters=100, max_patterns_learned_per_iter=500, max_entities_learned_per_iter=100, \
-	min_score_of_patterns=0.1, min_number_of_patterns = 1, save_step=1):
+	n_iters=100, max_patterns_learned_per_iter=50, max_entities_learned_per_iter=10, \
+	min_score_of_patterns=0.01, min_number_of_patterns = 1, save_step=1):
 	
 	logger  = iters_logger(1,"iteratively learning entities and patterns for {:} iters".format(n_iters))
 	logger.info("loading seeds and data...")
@@ -226,6 +275,8 @@ def bootstraped_learning(seeds_json,reverb_patterns_json, \
 			open("data/seeds.json","w").write(json.dumps(seeds_dict))
 			open("data/patterns.json","w").write(json.dumps(ps_patterns))
 
+	open("data/seeds.json","w").write(json.dumps(seeds_dict))
+	open("data/patterns.json","w").write(json.dumps(ps_patterns))
 	logger.info("bootstrap's done!")
 	logger.info("learned {:} problem entities and {:} problem patterns".format(len(seeds_dict['problem']),len(ps_patterns['problem'])))
 	logger.info("learned {:} solution entities and {:} solution patterns".format(len(seeds_dict['solution']),len(ps_patterns['solution'])))
@@ -239,6 +290,10 @@ elif op == "extract_patterns":
 	reverb_pattern_extraction()
 elif op == "bootstrap":
 	bootstraped_learning(sys.argv[2],sys.argv[3])
+elif op == "pattern_dict":
+	pattern_dict()
+else:
+	sys.stderr.write("no such operation!")
 
 
 

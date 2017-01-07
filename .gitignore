@@ -5,7 +5,6 @@ __pycache__/
 
 # Data directory
 data/
-preprocessing/
 
 .DS_Store
 

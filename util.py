@@ -11,24 +11,30 @@ class iters_logger:
 		self._tag = tag
 		self._start= datetime.datetime.now()
 		sys.stderr.write("{:}, logger step size: {:}, start logging...\n".format(self._tag,self._step))
-	
+		sys.stderr.write("Starting time: {:}\n".format(self._start))
 
 
 	def step(self):
 		if self._n%self._step==0:
+			averagetime = float((datetime.datetime.now()-self._start).seconds)/self._n
 			if self._tag is not None:
-				sys.stderr.write(self._tag+", progress: {:}\n".format(self._n))
+				sys.stderr.write(self._tag+", progress: {:}, average time per step: {:} seconds.\n".format(self._n,averagetime))
 			else:	
-				sys.stderr.write("progress: {:}\n".format(self._n))
+				sys.stderr.write("progress: {:}\n,average time per step: {:}\n".format(self._n,averagetime))
 
 		self._n+=1
 
 	def info(self,infos):
 		sys.stderr.write("INFO: {:}\n".format(infos))
 
+	def error(self,error):
+		sys.stderr.write("ERROR: {:}\n".format(error))
+
+
 	def end(self):
+		sys.stderr.write("Ending time: {:}\n".format(datetime.datetime.now()))
 		if self._tag is not None:
-			sys.stderr.write(self._tag+" counting done, total count: {:}\n".format(self._n))
+			sys.stderr.write("{:} counting done, total count: {:}, takes {:} seconds.\n".format(self._tag,self._n,(datetime.datetime.now()-self._start).seconds))
 		else:
 			sys.stderr.write("counting done, total count: {:}, takes {:} seconds.\n".format(self._n, (datetime.datetime.now()-self._start).seconds))
 
